@@ -1,0 +1,70 @@
+<template>
+
+ <div>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="ratings.length"
+      :per-page="perPage"
+      aria-controls="image-table"
+    ></b-pagination>
+
+    <b-table
+      id="image-table"
+      hover
+      fixed
+      :items="ratings"
+      :fields="fields"
+      small
+      :per-page="perPage"
+      :current-page="currentPage"
+      @row-clicked="rowClicked"
+    >
+    </b-table>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="ratings.length"
+      :per-page="perPage"
+      aria-controls="image-table"
+    ></b-pagination>
+    
+  </div>
+
+</template>
+
+<script>
+  import { mapState } from 'vuex';
+  export default {
+    name: "RatingList",
+    data() {
+      return {
+        fields: ['rev_stars', 'num_of_ratings'],
+        items: [],
+        currentPage: 1,
+        perPage: 10
+      }
+    },
+    computed: {
+      ...mapState([
+        'ratings'
+      ]),
+     /*  resultsToShow: function() {
+        return this.results.filter(result => result.tournamentId == this.$route.params.id);
+      } */
+    },
+    methods: {
+      rowClicked(record, index) {
+        this.$router.push({ name: 'SingleRating', params: { id: record.id, tournamentId: record.tournamentId} });
+      },
+      accessResultPosting(){
+        this.$router.push({ name: 'PostRating', params: { id: this.$route.params.id} });
+      }
+    }
+  }
+</script>
+
+<style scoped>
+  .pagination {
+    justify-content: center;
+  }
+  
+</style>
